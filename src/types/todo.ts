@@ -17,3 +17,7 @@ export type UpdateTodoParams = {
 export type DeleteTodoParams = {
     id: string;
 };
+
+export type CompletedTodoParams = {
+    id: string;
+};

@@ -72,3 +72,18 @@ export const deleteTodo = async (id: string) => {
     return {success: false, error: error}
   }
 }
+
+export const completeTodo = async (id: string, isCompleted: boolean) => {
+  try {
+
+    const updated = await prisma.todo.update({
+      where: { id },
+      data: { isCompleted: isCompleted },
+    });
+
+    return updated;
+
+  } catch (error) {
+    console.log(error);
+  }
+}

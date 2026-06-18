@@ -1,7 +1,7 @@
 import type { Request, Response } from "express"
-import { createTodo, deleteTodo, getTodos, updateTodo } from "../service/todo.service"
+import { completeTodo, createTodo, deleteTodo, getTodos, updateTodo } from "../service/todo.service"
 import { prisma } from "../lib/prisma";
-import type { DeleteTodoParams, UpdateTodoParams } from "../types/todo";
+import type { CompletedTodoParams, DeleteTodoParams, UpdateTodoParams } from "../types/todo";
 
 export const handleGetTodo = async (req: Request, res: Response) => {
     try {
@@ -69,6 +69,26 @@ export const handleDeleteTodo = async (req: Request<DeleteTodoParams>, res: Resp
     } catch (error) {
         res.status(500).json({
             message: "Failed to Delete todo",
+        });
+    }
+}
+
+export const handleCompletedTodo = async (req: Request<CompletedTodoParams>, res: Response) => {
+    try {
+        
+        const { id } = req.params;
+
+        const { isCompleted } = req.body;
+
+        const data = await completeTodo(id, isCompleted)
+
+        if(!data) res.status(404).json("Unable to update iscompleted status");
+
+        res.status(200).json({succses: true});
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Failed to update todo isCompleted Status",
         });
     }
 }
